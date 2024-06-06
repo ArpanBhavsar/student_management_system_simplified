@@ -17,6 +17,9 @@ const { MongoClient } = require("mongodb");
 //Create the instance of express module to create and start the express server
 const app = express();
 
+//Use the body-parser module to get the request body in JSON format
+app.use(bodyParser.json());
+
 //Read the variables MONGO_URI and PORT from the .env file
 const { MONGO_URI, PORT } = process.env;
 
@@ -28,13 +31,49 @@ const client = new MongoClient(MONGO_URI);
 //Created the async function to wait for the connection to establish first to receive the message.
 const startServer = async () => {
   try {
-    // Await the connection to MongoDB
+    // Await the connection to MongoDB. It will wait for the connection to establish first
     await client.connect();
+    //Print the success message on console once its connceted to MongoDB
     console.log("Successfully connected to MongoDB");
+
+    //Define the db after connecting to MongoDB Database
+    const db = client.db();
 
     // Basic Homepage Route to check if the server is running perfectly or not on the browser.
     app.get("/", (req, res) => {
       res.send("Hello World!");
+    });
+
+    //Route to get all students from students collection. To retrieve the data we will use GET request.
+    app.get("/students", async (req, res)=>{
+        //Try catch block to try the code and print the error if any error occurs
+        try{
+                //Retrieve all the students using db.collection.find() and store it in students variable.
+                //toArray() funciton is used to combine all data in JSON Array format.
+                const students = await db.collection('students').find().toArray();
+                //Send the response of students data in JSON format. 
+                res.json(students);
+        } 
+        //Catch block to catch any error and print it on the console
+        catch(error){
+                res.json({error_status:'An error occured while fetching the students.', error_message: error.message});
+        }
+    });
+
+    //Route to add one student to students collection. To add or create new data we will use POST request.
+    app.post("/addOneStudent", async (req, res)=>{
+        //Try catch block to try the code and print the error if any error occurs
+        try{
+                //Create student variable to call db.collection.insertOne() funtion to add one student.
+                //For adding one student we will use the request body from the POST request as a data to add
+                const student = await db.collection('students').insertOne(req.body);
+                //Send the student data which we just added to database back to user to show success that student has been added successfully.
+                res.json(student);
+        }
+        //Catch block to catch any error and print it on the console
+        catch(error){
+                res.json({error_status:'An error occured while adding one the student.', error_message: error.message});
+        }
     });
 
     // Start the Express server using listen() function on the provided port
