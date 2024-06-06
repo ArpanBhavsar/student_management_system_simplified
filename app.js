@@ -45,35 +45,81 @@ const startServer = async () => {
     });
 
     //Route to get all students from students collection. To retrieve the data we will use GET request.
-    app.get("/students", async (req, res)=>{
-        //Try catch block to try the code and print the error if any error occurs
-        try{
-                //Retrieve all the students using db.collection.find() and store it in students variable.
-                //toArray() funciton is used to combine all data in JSON Array format.
-                const students = await db.collection('students').find().toArray();
-                //Send the response of students data in JSON format. 
-                res.json(students);
-        } 
+    app.get("/students", async (req, res) => {
+      //Try catch block to try the code and print the error if any error occurs
+      try {
+        //Retrieve all the students using db.collection.find() and store it in students variable.
+        //toArray() funciton is used to combine all data in JSON Array format.
+        const students = await db.collection("students").find().toArray();
+        //Send the response of students data in JSON format.
+        res.json(students);
+      } catch (error) {
         //Catch block to catch any error and print it on the console
-        catch(error){
-                res.json({error_status:'An error occured while fetching the students.', error_message: error.message});
-        }
+        res.json({
+          error_status: "An error occured while fetching the students.",
+          error_message: error.message,
+        });
+      }
     });
 
     //Route to add one student to students collection. To add or create new data we will use POST request.
-    app.post("/addOneStudent", async (req, res)=>{
-        //Try catch block to try the code and print the error if any error occurs
-        try{
-                //Create student variable to call db.collection.insertOne() funtion to add one student.
-                //For adding one student we will use the request body from the POST request as a data to add
-                const student = await db.collection('students').insertOne(req.body);
-                //Send the student data which we just added to database back to user to show success that student has been added successfully.
-                res.json(student);
-        }
+    app.post("/addOneStudent", async (req, res) => {
+      //Try catch block to try the code and print the error if any error occurs
+      try {
+        //Create student variable to call db.collection.insertOne() funtion to add one student.
+        //For adding one student we will use the request body from the POST request as a data to add
+        const student = await db.collection("students").insertOne(req.body);
+        //Send the student data which we just added to database back to user to show success that student has been added successfully.
+        res.json(student);
+      } catch (error) {
         //Catch block to catch any error and print it on the console
-        catch(error){
-                res.json({error_status:'An error occured while adding one the student.', error_message: error.message});
-        }
+        res.json({
+          error_status: "An error occured while adding one the student.",
+          error_message: error.message,
+        });
+      }
+    });
+
+    //Route to update one student in students collection. To update the data we will use PUT request.
+    app.put("/updateOneStudent/:student_id", async (req, res) => {
+      //Try catch block to try the code and print the error if any error occurs
+      try {
+        //Create studentUpdate variable to call db.collection.updateOne() funciton to update one student.
+        //Same as insertOne we will take JSON req body for student data and from the URL we will take the student_id as query. It can be accessed using req.params
+        const studentUpdate = await db
+          .collection("students")
+          .updateOne(
+            { student_id: parseInt(req.params.student_id) },
+            { $set: req.body }
+          );
+        //Send the response in JSON
+        res.json(studentUpdate);
+      } catch (error) {
+        //Catch block to catch any error and print it on the console
+        res.json({
+          error_status: "An error occured while updaing one student.",
+          error_message: error.message,
+        });
+      }
+    });
+
+    //Route to delete one student in students collection. To delete the data we will use DELETE request.
+    app.delete("/deleteOneStudent/:student_id", async (req, res) => {
+      //Try catch block to try the code and print the error if any error occurs
+      try {
+        //Create deleteStudent variable to call the db.collection.deleteOne() funciton to delete one student based on student id.
+        //From the URL we will take the student_id as query. It can be accessed using req.params to delete student based on student_id
+        const deleteStudent = await db.collection('students').deleteOne({student_id: parseInt(req.params.student_id)});
+        //Send the response in JSON
+        res.json(deleteStudent);
+
+      } catch (error) {
+        //Catch block to catch any error and print it on the console
+        res.json({
+          error_status: "An error occured while deleting one student.",
+          error_message: error.message,
+        });
+      }
     });
 
     // Start the Express server using listen() function on the provided port
@@ -83,7 +129,7 @@ const startServer = async () => {
       );
     });
   } catch (err) {
-        //Catch and print the error on console when the error occurs while connecting with MongoDB.
+    //Catch and print the error on console when the error occurs while connecting with MongoDB.
     console.error("Failed to connect to MongoDB", err);
     process.exit(1);
   }
