@@ -100,3 +100,42 @@ body-parser: To manage the body of request
 dotenv: To access the .env file which contains sensitive information like database connection URL and password
 
 
+Comparison: Simple REST API Approach vs. MVC Architecture
+
+Simple REST API Approach
+Overview
+
+In the simple REST API approach, the entire application logic, from handling requests to interacting with the database, is managed directly within the route handlers. 
+This approach is straightforward and quick to implement, especially for small-scale applications.
+
+Advantages
+
+Simplicity: Easy to understand and implement.
+Rapid Development: Quick to set up, ideal for prototypes or small projects.
+Minimal Overhead: Fewer layers and files, which can be beneficial for small applications.
+Disadvantages
+
+Code Organization: As the application grows, managing code becomes difficult due to tightly coupled logic and routes.
+Scalability: Harder to scale and maintain; adding new features or changing existing ones can be cumbersome.
+Testability: Unit testing and debugging can be more challenging since concerns are not separated.
+Reusability: Code reuse is limited, leading to potential duplication.
+MVC Architecture
+Overview
+
+MVC (Model-View-Controller) is a design pattern that separates an application into three main components: Model, View, and Controller. This separation promotes organized and modular code, enhancing maintainability and scalability.
+
+Model: Manages data and business logic.
+View: Manages the presentation layer.
+Controller: Handles user input and interacts with the Model to update the View.
+Advantages
+
+Separation of Concerns: Each component has a distinct responsibility, leading to cleaner and more organized code.
+Scalability: Easier to manage and scale as the application grows.
+Maintainability: Simplifies maintenance and updates, as changes in one part of the application don't affect others.
+Testability: Easier to write unit tests due to well-defined boundaries between components.
+Reusability: Promotes reuse of components, such as models and views, across different parts of the application.
+Disadvantages
+
+Complexity: More initial setup and a steeper learning curve, especially for beginners.
+Overhead: More files and layers to manage, which can be overkill for very small projects.
+Slower Development: Initial development can be slower due to the need for structuring the application properly.

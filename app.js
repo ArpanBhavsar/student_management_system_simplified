@@ -80,6 +80,24 @@ const startServer = async () => {
       }
     });
 
+    //Route to add many student to students collection. To add or create new data we will use POST request.
+    app.post("/addManyStudent", async (req, res) => {
+        //Try catch block to try the code and print the error if any error occurs
+        try {
+          //Create students variable to call db.collection.insertMany() funtion to add many student.
+          //For adding many student we will use the request body from the POST request as a data to add
+          const student = await db.collection("students").insertMany(req.body);
+          //Send the student data which we just added to database back to user to show success that student has been added successfully.
+          res.json(student);
+        } catch (error) {
+          //Catch block to catch any error and print it on the console
+          res.json({
+            error_status: "An error occured while adding one the student.",
+            error_message: error.message,
+          });
+        }
+      });
+
     //Route to update one student in students collection. To update the data we will use PUT request.
     app.put("/updateOneStudent/:student_id", async (req, res) => {
       //Try catch block to try the code and print the error if any error occurs
@@ -102,6 +120,29 @@ const startServer = async () => {
         });
       }
     });
+
+    //Route to update many student in students collection. To update the data we will use PUT request.
+    app.put("/updateManyStudent/:batch_year", async (req, res) => {
+        //Try catch block to try the code and print the error if any error occurs
+        try {
+          //Create studentUpdate variable to call db.collection.updateOne() funciton to update one student.
+          //Same as insertOne we will take JSON req body for student data and from the URL we will take the student_id as query. It can be accessed using req.params
+          const studentUpdate = await db
+            .collection("students")
+            .updateMany(
+              { batch_year: req.params.batch_year },
+              { $set: req.body }
+            );
+          //Send the response in JSON
+          res.json(studentUpdate);
+        } catch (error) {
+          //Catch block to catch any error and print it on the console
+          res.json({
+            error_status: "An error occured while updaing one student.",
+            error_message: error.message,
+          });
+        }
+      });
 
     //Route to delete one student in students collection. To delete the data we will use DELETE request.
     app.delete("/deleteOneStudent/:student_id", async (req, res) => {
