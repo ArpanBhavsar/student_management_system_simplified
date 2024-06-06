@@ -1,0 +1,102 @@
+REST API
+
+REST (Representational State Transfer) API is an architectural style for designing networked applications. 
+It uses HTTP requests to perform CRUD (Create, Read, Update, Delete) operations on resources.
+Each resource is identified by a unique URL and can be manipulated using standard HTTP methods.
+
+GET: Retrieve data from the server.
+POST: Send data to the server to create a new resource.
+PUT: Update an existing resource on the server.
+DELETE: Remove a resource from the server.
+
+MongoDB CRUD Functions:
+
+MongoDB is NoSQL database that store data in JSON-like documents.
+Example of document structure:
+{
+        "name": "John", #String Value
+        "age" : 30, #Number Value
+        "email": ["jsmith@gmail.com", "jsmith01@gmail.com], #Array Value
+        "phone_number": {
+                "phone": "+1-123-456-7890",
+                "home": "+1-456-789-1230"
+        }, #Object Value
+        "courses": null #Null value
+}
+
+For JSON documents, Key will always be strings. Values can be string, number, object, array or null(empty value).
+
+MongoDB CRUD operations functions using Node.js:
+
+MySQL Insert Data: 
+INSERT INTO `students` (student_id, student_name, student_email, student_phoneno) VALUES (1, 'John', 'jsmith01@gmail.com', '+1-123-456-7890');
+
+MongoDB Insert Data:
+db.collection.insertOne(document);
+
+db - Database variable defined at start to use which database from MongoDB connection
+collection - Table: it indicates which table to use from the database to insert the data
+insertOne(): Function to insert one document data into MongoDB
+document : Data that you want to insert or add in the table/collection
+
+
+MySQL Read/Retrieve All Data:
+SELECT * FROM `students`; #Provides all data from students table in MySQL
+
+MongoDB Read/Retrieve All Data:
+db.collection.find();
+
+Similiar to using SELECT *. When you don't provide any query, it gives you all data from the selected collection/table.
+db - Database variable defined at start to use which database from MongoDB connection
+collection - Table: it indicates which table to use from the database to read the data from
+find(): Function to read or find all data of selected collection/table
+
+MySQL Read/Retrieve Data WHERE clause to find specific data with provided condition:
+SELECT * FROM `students` WHERE `student_id`=5; #Provides data for student who has student_id as 5 in MySQL
+
+MongoDB Read/Retrieve Data with WHERE clause or condition:
+db.collection.find(query);
+
+Similiar to using WHERE clause. 
+db - Database variable defined at start to use which database from MongoDB connection
+collection - Table: it indicates which table to use from the database to read the data from
+find(): Function to read or find data of selected collection/table
+query: Condition like WHERE clause of MySQL where you providethe condition to find specific data 
+
+MySQL Update Data:
+UPDATE `students` SET `student_email`="asmith@gmail.com" WHERE `student_id`=5; #Update the email of student who has student_id as 5
+
+MongoDB Update Data:
+db.collection.updateOne(query, updatedDocument);
+
+Similar to using UPDATE statement in MySQL database
+db - Database variable defined at start to use which database from MongoDB connection
+collection - Table: it indicates which table to use from the database to update the data in
+updateOne(): Function to update one docume or data from the selected collection/table
+query: Similar to WHERE clause of MySQL which helps database find which document or data to update from the collection/table
+updatedDocument: Data or values that you want to set instead of old data or values 
+
+MySQL Delete Data:
+DELETE FROM `students` WHERE `student_id`=5; #Delete the data of student where student_id is 5
+
+MongoDB Delete Data:
+db.collection.deleteOne(query);
+
+Similar to using DELETE statement in MySQL database
+db - Database variable defined at start to use which database from MongoDB connection
+collection - Table: it indicates which table to use from the database to delete the data from
+deleteOne(): Funtion to delete one document from the collection/table
+query: Similar to WHERE clause of MySQL it helps database decide which document or data to delete (Without the query it deletes everything, so its is important to check if you have provided the query or not before running this funciton.)
+
+
+To install multiple packages/libraries using npm provide package names with space.
+Ex:
+npm install express mongoose body-parser
+
+Packages/Libraries required for Student Management System:
+express: To Create and Start Express Server and manage routes
+mongoose: To connect with MongoDB database and perform CRUD operations
+body-parser: To manage the body of request 
+dotenv: To access the .env file which contains sensitive information like database connection URL and password
+
+
