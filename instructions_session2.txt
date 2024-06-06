@@ -1,0 +1,60 @@
+Template Engine in Node.js
+
+Overview
+
+A template engine in Node.js is used to generate HTML markup with plain JavaScript. 
+It allows developers to use static template files in their applications and replace variables in those files with actual values at runtime. 
+This is especially useful for creating dynamic web pages.
+
+Different Template Engines
+
+There are several popular template engines for Node.js, including:
+
+EJS (Embedded JavaScript)
+Pug (formerly Jade)
+Handlebars
+Mustache
+Nunjucks
+Each of these template engines has its own syntax and features.
+
+EJS (Embedded JavaScript)
+
+EJS is a simple and effective template engine for Node.js. 
+It allows developers to write HTML templates with embedded JavaScript, providing a straightforward way to generate HTML with dynamic data.
+
+Benefits of Using EJS
+Simplicity: EJS uses plain JavaScript and HTML, making it easy to learn and use.
+Flexibility: You can embed JavaScript logic directly within your HTML templates.
+Performance: EJS is fast and lightweight, making it suitable for high-performance applications.
+Integration: Easily integrates with Node.js and Express, simplifying the creation of dynamic web applications.
+
+
+Syntax for EJS:
+
+1. Embedding JavaScript 
+
+Simple HTML: 
+<h1> Title </h1> //Simple HTML heading tag which you can not change dynamically without JavaScript code with DOM manipulation
+
+EJS Syntax:
+<h1> <%= title %> </h1> // title is variable for which the value can be provided dynamically from Node.js code 
+
+2. Conditional Statements
+
+If, else if, else 
+
+EJS Syntax for condtional Statements:
+
+<% if (user) { %>
+        <h2>Welcome, <%= user.name %> </h2>
+<% } else { %>
+        <h2>Welcome, Guest</h2>
+<% } %>
+
+3. Looping
+
+<ul>
+        <% items.forEach(functions(item){%>
+                <li><%= item %></li>
+        <% }); %>
+</ul>

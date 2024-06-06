@@ -8,17 +8,27 @@ const express = require("express"); //const means constant variable and in node.
 //Import the body-parser module/library to handle the body of HTTP requests
 const bodyParser = require("body-parser");
 
+//Import the path module to handle the folder and file path for views
+const path = require("path");
+
 //Import the dotenv module/library to read variables store in the .env file
 require("dotenv").config();
 
 //Import the mongodb module/library to connect with MongoDB database and handle the CRUD operations
 const { MongoClient } = require("mongodb");
+const { title } = require("process");
 
 //Create the instance of express module to create and start the express server
 const app = express();
 
 //Use the body-parser module to get the request body in JSON format
 app.use(bodyParser.json());
+
+//Set the view engine or Template Engine to EJS
+app.set('view engine', 'ejs');
+
+//Set the path to views folder to help server find the location of ejs files
+app.set('views', path.join(__dirname, 'views'))
 
 //Read the variables MONGO_URI and PORT from the .env file
 const { MONGO_URI, PORT } = process.env;
@@ -51,8 +61,10 @@ const startServer = async () => {
         //Retrieve all the students using db.collection.find() and store it in students variable.
         //toArray() funciton is used to combine all data in JSON Array format.
         const students = await db.collection("students").find().toArray();
-        //Send the response of students data in JSON format.
-        res.json(students);
+        // //Send the response of students data in JSON format.
+        // res.json(students);
+        //Connect the index.ejs to show the students data dynamically on Webpage
+        res.render('index', {title: "Student Management System", students: students});
       } catch (error) {
         //Catch block to catch any error and print it on the console
         res.json({
@@ -145,14 +157,14 @@ const startServer = async () => {
       });
 
     //Route to delete one student in students collection. To delete the data we will use DELETE request.
-    app.delete("/deleteOneStudent/:student_id", async (req, res) => {
+    app.post("/deleteOneStudent/:student_id", async (req, res) => {
       //Try catch block to try the code and print the error if any error occurs
       try {
         //Create deleteStudent variable to call the db.collection.deleteOne() funciton to delete one student based on student id.
         //From the URL we will take the student_id as query. It can be accessed using req.params to delete student based on student_id
         const deleteStudent = await db.collection('students').deleteOne({student_id: parseInt(req.params.student_id)});
         //Send the response in JSON
-        res.json(deleteStudent);
+        res.redirect('/students');
 
       } catch (error) {
         //Catch block to catch any error and print it on the console

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title>
+                <%= title %>
+        </title>
+        <style>
+                table,
+                th,
+                tr,
+                td {
+                        border-collapse: collapse;
+                        border: 2px solid black;
+                }
+
+                a {
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                        color: blue;
+                        padding: 0.1em;
+                        margin: 0.1em;
+                }
+        </style>
+</head>
+
+<body>
+        <h1>
+                <%= title %>
+        </h1>
+
+        <h2>All Students</h2>
+        <a href="/students">Add a student</a>
+        <table>
+                <tr>
+                        <th>Actions</th>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact No</th>
+                        <th>Address</th>
+                        <th>Gender</th>
+                        <th>Date of Birth</th>
+                        <th>Batch Year</th>
+                </tr>
+                <% students.forEach(function(student) { %>
+                        <tr>
+                                <td><a href="/students">Edit</a>
+                                        <form action="/deleteOneStudent/<%= student.student_id %>" method="POST" style="display: inline;">
+                                                <button type="submit">Delete</button>
+                                        </form>
+                                </td>
+                                <td>
+                                        <%= student.student_id %>
+                                </td>
+                                <td>
+                                        <%= student.name %>
+                                </td>
+                                <td>
+                                        <%= student.email %>
+                                </td>
+                                <td>
+                                        <%= student.conatct_no %>
+                                </td>
+                                <td>
+                                        <%= student.address %>
+                                </td>
+                                <td>
+                                        <%= student.gender %>
+                                </td>
+                                <td>
+                                        <%= student.date_of_birth %>
+                                </td>
+                                <td>
+                                        <%= student.batch_year %>
+                                </td>
+                        </tr>
+                        <% }); %>
+        </table>
+</body>
+
+</html>
