@@ -30,7 +30,7 @@
         </h1>
 
         <h2>All Students</h2>
-        <a href="/students">Add a student</a>
+        <a href="/newStudent">Add a student</a>
         <table>
                 <tr>
                         <th>Actions</th>
@@ -45,7 +45,7 @@
                 </tr>
                 <% students.forEach(function(student) { %>
                         <tr>
-                                <td><a href="/students">Edit</a>
+                                <td><a href="/updateStudent/<%= student.student_id %>">Edit</a>
                                         <form action="/deleteOneStudent/<%= student.student_id %>" method="POST" style="display: inline;">
                                                 <button type="submit">Delete</button>
                                         </form>

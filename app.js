@@ -78,11 +78,13 @@ const startServer = async () => {
     app.post("/addOneStudent", async (req, res) => {
       //Try catch block to try the code and print the error if any error occurs
       try {
-        //Create student variable to call db.collection.insertOne() funtion to add one student.
-        //For adding one student we will use the request body from the POST request as a data to add
+        // Create student variable to call db.collection.insertOne() funtion to add one student.
+        // For adding one student we will use the request body from the POST request as a data to add
         const student = await db.collection("students").insertOne(req.body);
         //Send the student data which we just added to database back to user to show success that student has been added successfully.
-        res.json(student);
+        // res.json(student);
+        // Redirect to /students routes to show all students
+        res.redirect("/students");
       } catch (error) {
         //Catch block to catch any error and print it on the console
         res.json({
@@ -173,6 +175,30 @@ const startServer = async () => {
           error_message: error.message,
         });
       }
+    });
+
+    //Route to show user form to add new Student
+    app.get('/newStudent', (req, res)=>{
+        //Render the new_student.ejs file to show user form
+        res.render('new_student');
+    });
+
+    //Route to show user form to update Student
+    app.get('/updateStudent/:student_id', async (req, res)=>{
+        try{
+                const student = await db.collection('students').find({student_id: parseInt(req.params.student_id)}).toArray();
+                // res.json(student[0]);
+                //Render the new_student.ejs file to show user form
+                res.render('update_student', {student: student[0]});
+        }
+        catch (error){
+            //Catch block to catch any error and print it on the console
+        res.json({
+                error_status: "An error occured while deleting one student.",
+                error_message: error.message,
+              });    
+        }
+        
     });
 
     // Start the Express server using listen() function on the provided port
